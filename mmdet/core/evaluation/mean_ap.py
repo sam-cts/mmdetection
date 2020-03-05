@@ -201,7 +201,8 @@ def tpfp_default(det_bboxes, gt_bboxes, gt_ignore, iou_thr, area_ranges=None):
 
 def get_cls_results(det_results, gt_bboxes, gt_labels, gt_ignore, class_id):
     """Get det results and gt information of a certain class."""
-    cls_dets = [det[class_id]
+
+    cls_dets = [det[class_id][0]
                 for det in det_results]  # det bboxes of this class
     cls_gts = []  # gt bboxes of this class
     cls_gt_ignore = []
@@ -244,6 +245,7 @@ def eval_map(det_results,
         tuple: (mAP, [dict, dict, ...])
     """
     assert len(det_results) == len(gt_bboxes) == len(gt_labels)
+
     if gt_ignore is not None:
         assert len(gt_ignore) == len(gt_labels)
         for i in range(len(gt_ignore)):
@@ -252,10 +254,11 @@ def eval_map(det_results,
                    if scale_ranges is not None else None)
     num_scales = len(scale_ranges) if scale_ranges is not None else 1
     eval_results = []
-    num_classes = len(det_results[0])  # positive class num
+    num_classes = len(det_results[0])-1  # positive class num
     gt_labels = [
         label if label.ndim == 1 else label[:, 0] for label in gt_labels
     ]
+
     for i in range(num_classes):
         # get gt and det bboxes of this class
         cls_dets, cls_gts, cls_gt_ignore = get_cls_results(
@@ -263,6 +266,7 @@ def eval_map(det_results,
         # calculate tp and fp for each image
         tpfp_func = (
             tpfp_imagenet if dataset in ['det', 'vid'] else tpfp_default)
+
         tpfp = [
             tpfp_func(cls_dets[j], cls_gts[j], cls_gt_ignore[j], iou_thr,
                       area_ranges) for j in range(len(cls_dets))

@@ -127,8 +127,11 @@ def segm2json(dataset, results):
     bbox_json_results = []
     segm_json_results = []
     for idx in range(len(dataset)):
-        img_id = dataset.img_ids[idx]
+        # change dataset.img_ids from dict keys to list
+        img_id = list(dataset.img_ids)[idx]
+        # img_id = dataset.img_ids[idx]
         det, seg = results[idx]
+        print(len(det))
         for label in range(len(det)):
             # bbox results
             bboxes = det[label]
@@ -137,7 +140,11 @@ def segm2json(dataset, results):
                 data['image_id'] = img_id
                 data['bbox'] = xyxy2xywh(bboxes[i])
                 data['score'] = float(bboxes[i][4])
-                data['category_id'] = dataset.cat_ids[label]
+                try:
+                    data['category_id'] = dataset.cat_ids[label]
+                except:
+                    print(label)
+                    print(dataset.cat_ids)
                 bbox_json_results.append(data)
 
             # segm results
@@ -152,7 +159,11 @@ def segm2json(dataset, results):
                 data = dict()
                 data['image_id'] = img_id
                 data['score'] = float(mask_score[i])
-                data['category_id'] = dataset.cat_ids[label]
+                try:
+                    data['category_id'] = dataset.cat_ids[label]
+                except:
+                    print(label)
+                    print(dataset.cat_ids)
                 segms[i]['counts'] = segms[i]['counts'].decode()
                 data['segmentation'] = segms[i]
                 segm_json_results.append(data)

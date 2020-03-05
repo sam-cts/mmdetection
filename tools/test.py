@@ -75,6 +75,7 @@ def collect_results(result_part, size, tmpdir=None):
             dir_tensor[:len(tmpdir)] = tmpdir
         dist.broadcast(dir_tensor, 0)
         tmpdir = dir_tensor.cpu().numpy().tobytes().decode().rstrip()
+    
     else:
         mmcv.mkdir_or_exist(tmpdir)
     # dump the part result to the dir
@@ -159,6 +160,8 @@ def main():
     # build the dataloader
     # TODO: support multiple images per gpu (only minor changes are needed)
     dataset = build_dataset(cfg.data.test)
+    # print(list(dataset.img_ids))
+    print(type(dataset))
     data_loader = build_dataloader(
         dataset,
         imgs_per_gpu=1,
@@ -210,6 +213,7 @@ def main():
                         coco_eval(result_files, eval_types, dataset.coco)
 
     # Save predictions in the COCO json format
+    # print(dataset.cat_ids)
     if args.json_out and rank == 0:
         if not isinstance(outputs[0], dict):
             results2json(dataset, outputs, args.json_out)
