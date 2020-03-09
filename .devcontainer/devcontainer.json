@@ -1,0 +1,10 @@
+{   
+    "name": "mmdetection",
+    "image": "pytorch/pytorch:1.4-cuda10.1-cudnn7-runtime",
+    "runArgs": ["--rm", "-it", "--gpus", "all"],
+    "extensions": ["dbaeumer.vscode-eslint"],
+    "mounts": [
+        "source=/mnt/sda5/datasets,target=/datasets,type=bind,consistency=cached"
+      ]
+    
+ }
