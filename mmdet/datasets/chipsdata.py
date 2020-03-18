@@ -1,6 +1,7 @@
 import numpy as np
 import json, os
-import skimage
+import skimage.io
+import skimage.draw
 from .custom import CustomDataset
 from .registry import DATASETS
 
@@ -27,10 +28,10 @@ class ChipsDataset(CustomDataset):
 
             if type(img_json[img_id]['regions']) is dict:
                 polygons = [r['shape_attributes'] for r in img_json[img_id]['regions'].values()]
-                labels = [r['label'] for r in img_json[img_id]['regions'].values()]
+                labels = ['chips' for r in img_json[img_id]['regions'].values()]
             else:
                 polygons = [r['shape_attributes'] for r in img_json[img_id]['regions']]
-                labels = [r['label'] for r in img_json[img_id]['regions']]
+                labels = ['chips' for r in img_json[img_id]['regions']]
 
             img_infos.append(
                 dict(id=img_id, 

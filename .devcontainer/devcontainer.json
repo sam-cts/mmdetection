@@ -1,6 +1,6 @@
 {   
     "name": "mmdetection",
-    "image": "pytorch/pytorch:1.4-cuda10.1-cudnn7-runtime",
+    "dockerFile": "../docker/Dockerfile",
     "runArgs": ["--rm", "-it", "--gpus", "all"],
     "extensions": ["dbaeumer.vscode-eslint"],
     "mounts": [
