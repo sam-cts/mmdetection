@@ -144,6 +144,8 @@ class Resize(object):
         for key in results.get('mask_fields', []):
             if results[key] is None:
                 continue
+            if len(results[key]) == 0:
+                continue
             if self.keep_ratio:
                 masks = [
                     mmcv.imrescale(
@@ -156,7 +158,11 @@ class Resize(object):
                     mmcv.imresize(mask, mask_size, interpolation='nearest')
                     for mask in results[key]
                 ]
-            results[key] = np.stack(masks)
+            try:
+                results[key] = np.stack(masks)
+            except ValueError:
+                print(len(results[key]))
+                
 
     def _resize_seg(self, results):
         for key in results.get('seg_fields', []):
@@ -245,6 +251,10 @@ class RandomFlip(object):
                                               results['flip_direction'])
             # flip masks
             for key in results.get('mask_fields', []):
+                if results[key] is None :
+                    continue
+                if len(results[key]) == 0 :
+                    continue
                 results[key] = np.stack([
                     mmcv.imflip(mask, direction=results['flip_direction'])
                     for mask in results[key]
