@@ -116,3 +116,5 @@ work_dirs/
 
 # Pytorch
 *.pth
+
+./datasets
