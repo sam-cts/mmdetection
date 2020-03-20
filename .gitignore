@@ -50,7 +50,7 @@ coverage.xml
 # Translations
 *.mo
 *.pot
-
+result*
 # Django stuff:
 *.log
 local_settings.py
@@ -116,3 +116,5 @@ work_dirs/
 
 # Pytorch
 *.pth
+
+datasets

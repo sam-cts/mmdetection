@@ -144,6 +144,8 @@ class Resize(object):
         for key in results.get('mask_fields', []):
             if results[key] is None:
                 continue
+            if len(results[key]) == 0:
+                continue
             if self.keep_ratio:
                 masks = [
                     mmcv.imrescale(

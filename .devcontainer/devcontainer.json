@@ -1,0 +1,11 @@
+{   
+    "name": "mmdetection",
+    "image": "mmdetection",
+    "forwardPorts": ["8080:8080"],
+    "runArgs": ["-it", "--gpus", "all"],
+    "extensions": ["dbaeumer.vscode-eslint"],
+    "mounts": [
+        "source=/mnt/sda5/datasets,target=/datasets,type=bind,consistency=cached"
+      ]
+    
+ }
